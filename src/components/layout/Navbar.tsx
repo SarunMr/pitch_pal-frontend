@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ROUTES } from "@/constants/route";
+import { ROUTES } from "@/constants/routes";
 
 export default function Navbar(): React.JSX.Element {
   return (
