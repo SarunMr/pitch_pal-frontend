@@ -129,7 +129,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-6 py-12">
+    <div className="flex items-center justify-center bg-background px-6 py-12">
       <div className="w-full max-w-sm space-y-6">
         {/* Logo */}
         <div className="flex items-center gap-2.5 justify-center">
@@ -303,25 +303,6 @@ export default function Register() {
             </div>
             <FieldError message={errors.confirmPassword?.message} />
           </div>
-
-          {/* Terms */}
-          <p className="text-[11px] text-muted-foreground leading-relaxed text-center">
-            By creating an account you agree to our{" "}
-            <Link
-              href="/terms"
-              className="text-primary hover:underline underline-offset-4 font-medium"
-            >
-              Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link
-              href="/privacy"
-              className="text-primary hover:underline underline-offset-4 font-medium"
-            >
-              Privacy Policy
-            </Link>
-            .
-          </p>
 
           {/* Submit Button */}
           <Button
