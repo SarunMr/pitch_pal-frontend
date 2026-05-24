@@ -44,11 +44,13 @@ export default function Hero(): React.JSX.Element {
           </div>
 
           {/* Headline */}
-          <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight mb-4 text-white">
-            Where Brilliant Ideas Meet{" "}
-            <span className="text-accent-foreground underline decoration-white/30 underline-offset-4">
-              Strategic Capital
-            </span>
+          <h1
+            className="text-white text-[48px] lg:text-[56px] leading-[1.08] font-extrabold mb-6"
+            style={{ letterSpacing: "-0.025em" }}
+          >
+            {"Where Nepal's Boldest Ideas Meet"}
+            <br />
+            <span className="text-[#7ED4A8]">the Right Investors</span>
           </h1>
 
           {/* Subheading */}
