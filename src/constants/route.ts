@@ -4,3 +4,5 @@ export const ROUTES = {
   LOGIN: "/auth/login",
   REGISTER: "/auth/register",
 };
+
+export type AppRoutes = typeof ROUTES;

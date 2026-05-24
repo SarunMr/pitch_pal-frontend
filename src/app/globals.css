@@ -1,26 +1,190 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --- Your Custom Material 3 Tokens --- */
+  --md-sys-color-primary: #00d4aa;
+  --md-sys-color-on-primary: #003328;
+  --md-sys-color-primary-container: #005140;
+  --md-sys-color-on-primary-container: #5fffd8;
+  --md-sys-color-secondary: #b89dff;
+  --md-sys-color-secondary-container: #443588;
+  --md-sys-color-tertiary: #39e87a;
+  --md-sys-color-tertiary-container: #00531f;
+  --md-sys-color-error: #ff6b6b;
+  --md-sys-color-error-container: #8b1a1a;
+  --md-sys-color-background: #f6f8fc;
+  --md-sys-color-surface: #ffffff;
+  --md-sys-color-surface-variant: #ebf0f5;
+  --md-sys-color-surface-container: #ecf0f5;
+  --md-sys-color-outline: #c2cbd6;
+  --md-sys-color-outline-variant: #d8e2ec;
+  --md-sys-color-inverse-surface: #2d3240;
+
+  /* --- Shadcn UI Structural Variables mapped to your theme --- */
+  --background: var(--md-sys-color-background);
+  --foreground: var(--md-sys-color-inverse-surface);
+
+  --card: var(--md-sys-color-surface);
+  --card-foreground: var(--md-sys-color-inverse-surface);
+
+  --popover: var(--md-sys-color-surface);
+  --popover-foreground: var(--md-sys-color-inverse-surface);
+
+  /* Buttons and interactive elements */
+  --primary: var(--md-sys-color-primary);
+  --primary-foreground: var(--md-sys-color-on-primary);
+
+  --secondary: var(--md-sys-color-secondary);
+  --secondary-foreground: var(--md-sys-color-surface);
+
+  --muted: var(--md-sys-color-surface-variant);
+  --muted-foreground: var(--md-sys-color-outline);
+
+  --accent: var(--md-sys-color-surface-container);
+  --accent-foreground: var(--md-sys-color-primary);
+
+  --destructive: var(--md-sys-color-error);
+  --destructive-foreground: #ffffff;
+
+  /* Borders and Rings */
+  --border: var(--md-sys-color-outline-variant);
+  --input: var(--md-sys-color-outline);
+  --ring: var(--md-sys-color-primary);
+
+  --radius: 0.75rem; /* Slightly softer radius matching Material 3 looks */
+
+  /* Charts and Sidebars */
+  --chart-1: var(--md-sys-color-primary);
+  --chart-2: var(--md-sys-color-secondary);
+  --chart-3: var(--md-sys-color-tertiary);
+  --chart-4: var(--md-sys-color-primary-container);
+  --chart-5: var(--md-sys-color-secondary-container);
+
+  --sidebar: var(--md-sys-color-surface-container);
+  --sidebar-foreground: var(--md-sys-color-inverse-surface);
+  --sidebar-primary: var(--md-sys-color-primary);
+  --sidebar-primary-foreground: var(--md-sys-color-on-primary);
+  --sidebar-accent: var(--md-sys-color-surface-variant);
+  --sidebar-accent-foreground: var(--md-sys-color-primary);
+  --sidebar-border: var(--md-sys-color-outline-variant);
+  --sidebar-ring: var(--md-sys-color-primary);
+}
+
+.dark {
+  /* --- Your Dark Custom Material 3 Tokens --- */
+  --md-sys-color-primary: #006b55;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #9ef7dc;
+  --md-sys-color-on-primary-container: #00201a;
+  --md-sys-color-secondary: #5b35c5;
+  --md-sys-color-secondary-container: #e8daff;
+  --md-sys-color-tertiary: #006d30;
+  --md-sys-color-tertiary-container: #96ffb5;
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-background: #0a0b0f;
+  --md-sys-color-surface: #13151d;
+  --md-sys-color-surface-variant: #1c1f2e;
+  --md-sys-color-surface-container: #171921;
+  --md-sys-color-outline: #2e3348;
+  --md-sys-color-outline-variant: #1a1d2b;
+  --md-sys-color-inverse-surface: #e8e8f0;
+
+  /* --- Shadcn UI Structural Variables (Dark Mode mapping) --- */
+  --background: var(--md-sys-color-background);
+  --foreground: var(--md-sys-color-inverse-surface);
+
+  --card: var(--md-sys-color-surface);
+  --card-foreground: var(--md-sys-color-inverse-surface);
+
+  --popover: var(--md-sys-color-surface);
+  --popover-foreground: var(--md-sys-color-inverse-surface);
+
+  --primary: var(--md-sys-color-primary);
+  --primary-foreground: var(--md-sys-color-on-primary);
+
+  --secondary: var(--md-sys-color-secondary);
+  --secondary-foreground: var(--md-sys-color-secondary-container);
+
+  --muted: var(--md-sys-color-surface-variant);
+  --muted-foreground: var(--md-sys-color-outline);
+
+  --accent: var(--md-sys-color-surface-variant);
+  --accent-foreground: var(--md-sys-color-primary-container);
+
+  --destructive: var(--md-sys-color-error);
+  --destructive-foreground: var(--md-sys-color-error-container);
+
+  --border: var(--md-sys-color-outline-variant);
+  --input: var(--md-sys-color-outline);
+  --ring: var(--md-sys-color-primary);
+
+  --sidebar: var(--md-sys-color-surface-container);
+  --sidebar-foreground: var(--md-sys-color-inverse-surface);
+  --sidebar-primary: var(--md-sys-color-primary);
+  --sidebar-primary-foreground: var(--md-sys-color-on-primary);
+  --sidebar-accent: var(--md-sys-color-surface-variant);
+  --sidebar-accent-foreground: var(--md-sys-color-primary-container);
+  --sidebar-border: var(--md-sys-color-outline-variant);
+  --sidebar-ring: var(--md-sys-color-primary);
 }
 
 @theme inline {
-  --color-background: var(--background);
+  --font-heading: var(--font-sans);
+  --font-sans: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--color-primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
