@@ -19,6 +19,9 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { registerSchema, type RegisterFormValues } from "./schema";
 import { ROUTES } from "@/constants/routes";
+import { handleRegister } from "@/lib/actions/auth.actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // ── Google Icon ───────────────────────────────────────────────────────────────
 function GoogleIcon() {
@@ -107,12 +110,20 @@ export default function Register() {
   });
 
   const passwordValue = watch("password", "");
+  const router = useRouter();
 
   const onSubmit = async (data: RegisterFormValues) => {
     setIsLoading(true);
     try {
-      console.log("Register data:", data);
-      await new Promise((r) => setTimeout(r, 1000));
+      const result = await handleRegister(data);
+      if (result.success) {
+        toast.success(result.message || "Registration successful");
+        router.push(ROUTES.LOGIN);
+      } else {
+        toast.error(result.message || "Registration failed");
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
     } finally {
       setIsLoading(false);
     }

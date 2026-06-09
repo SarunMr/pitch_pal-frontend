@@ -3,6 +3,7 @@ export const ROUTES = {
   HOME: "/",
   LOGIN: "/login",
   REGISTER: "/register",
+  DASHBOARD: "/dashboard",
 };
 
 export type AppRoutes = typeof ROUTES;
