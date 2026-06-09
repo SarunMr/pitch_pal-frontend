@@ -10,6 +10,9 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { loginSchema, type LoginFormValues } from "./schema";
 import { ROUTES } from "@/constants/routes";
+import { handleLogin } from "@/lib/actions/auth.actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // ── Google Icon ───────────────────────────────────────────────────────────────
 function GoogleIcon() {
@@ -57,11 +60,20 @@ export default function Login() {
     resolver: zodResolver(loginSchema),
   });
 
+  const router = useRouter();
+
   const onSubmit = async (data: LoginFormValues) => {
     setIsLoading(true);
     try {
-      console.log("Login data:", data);
-      await new Promise((r) => setTimeout(r, 1000)); // mock delay
+      const result = await handleLogin(data);
+      if (result.success) {
+        toast.success(result.message || "Login successful");
+        router.push(ROUTES.DASHBOARD);
+      } else {
+        toast.error(result.message || "Login failed");
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
     } finally {
       setIsLoading(false);
     }
