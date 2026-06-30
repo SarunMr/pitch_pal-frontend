@@ -117,8 +117,8 @@ export default function Register() {
     try {
       const result = await handleRegister(data);
       if (result.success) {
-        toast.success(result.message || "Registration successful");
-        router.push(ROUTES.LOGIN);
+        toast.success(result.message || "Registration successful!");
+        router.push("/onboarding");
       } else {
         toast.error(result.message || "Registration failed");
       }
