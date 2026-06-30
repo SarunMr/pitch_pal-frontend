@@ -68,7 +68,16 @@ export default function Login() {
       const result = await handleLogin(data);
       if (result.success) {
         toast.success(result.message || "Login successful");
-        router.push(ROUTES.DASHBOARD);
+        const role = result.data?.role;
+        if (role === "investor") {
+          router.push(ROUTES.DASHBOARD.INVESTOR);
+        } else if (role === "entrepreneur") {
+          router.push(ROUTES.DASHBOARD.ENTREPRENEUR);
+        } else if (role === "admin") {
+          router.push(ROUTES.DASHBOARD.ADMIN);
+        } else {
+          router.push(ROUTES.HOME);
+        }
       } else {
         toast.error(result.message || "Login failed");
       }

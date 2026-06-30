@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 export async function setTokenCookie(token: string) {
   const cookieStore = await cookies();
-  cookieStore.set({ name: "auth_token", value: token });
+  cookieStore.set({ name: "auth_token", value: token, path: "/", maxAge: 7 * 24 * 60 * 60 });
 }
 
 export async function getTokenCookie() {
@@ -14,7 +14,7 @@ export async function getTokenCookie() {
 
 export async function storeUserData(userData: any) {
   const cookieStore = await cookies();
-  cookieStore.set({ name: "user_data", value: JSON.stringify(userData) });
+  cookieStore.set({ name: "user_data", value: JSON.stringify(userData), path: "/", maxAge: 7 * 24 * 60 * 60 });
 }
 
 export async function getUserData() {

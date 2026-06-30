@@ -1,7 +1,10 @@
 export const API = {
   AUTH: {
-    REGISTER: "/api/auth/register",
-    LOGIN: "/api/auth/login",
+    REGISTER: "/auth/register",
+    LOGIN: "/auth/login",
+    WHOAMI: "/auth/whoami",
+    UPDATE_PROFILE: "/auth/update",
+    RESET_PASSWORD: "/auth/reset-password",
   },
   INVESTOR: {
     // future
@@ -10,6 +13,7 @@ export const API = {
     // future
   },
   ADMIN: {
-    // future
+    USERS: "/admin/users",
+    USER_BY_ID: (id: string) => `/admin/users/${id}`,
   },
 };
