@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { Inter, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, DM_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 
-const inter = Inter({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-heading",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const dmSans = DM_Sans({
   subsets: ["latin"],
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
@@ -26,9 +26,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${plusJakartaSans.variable} ${dmSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col font-sans text-foreground bg-background vc-init">
         {children}
         <Toaster closeButton richColors position="top-right" />
       </body>
