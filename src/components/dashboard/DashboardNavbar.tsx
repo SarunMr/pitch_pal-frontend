@@ -51,6 +51,14 @@ export const DashboardNavbar = () => {
           >
             Dashboard
           </a>
+          {user?.role === "admin" && (
+            <a
+              href="/admin/users"
+              className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
+            >
+              Users
+            </a>
+          )}
           <a href="#" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
             Explore
           </a>
@@ -100,6 +108,15 @@ export const DashboardNavbar = () => {
                     <UserIcon className="mr-2 h-4 w-4" />
                     <span>Profile</span>
                   </DropdownMenuItem>
+                  {user?.role === "admin" && (
+                    <DropdownMenuItem
+                      className="cursor-pointer"
+                      onClick={() => (window.location.href = "/admin/users")}
+                    >
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>User Management</span>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem className="cursor-pointer">
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Settings</span>
