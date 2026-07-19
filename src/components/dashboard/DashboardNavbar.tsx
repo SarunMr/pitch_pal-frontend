@@ -74,7 +74,13 @@ export const DashboardNavbar = () => {
               <DropdownMenuTrigger className="relative flex h-9 w-9 items-center justify-center rounded-full overflow-hidden border-2 border-[#1A6B4A]/20 focus:outline-none focus:ring-2 focus:ring-[#1A6B4A] focus:ring-offset-2 transition-all">
                 <Avatar className="h-full w-full">
                   <AvatarImage
-                    src={user.profilePicture ? `http://localhost:5000${encodeURI(user.profilePicture)}` : ""}
+                    src={
+                      user.profilePicture
+                        ? user.profilePicture.startsWith("http")
+                          ? user.profilePicture
+                          : `http://localhost:5000${encodeURI(user.profilePicture)}`
+                        : ""
+                    }
                     alt={user.username}
                   />
                   <AvatarFallback className="bg-[#1A6B4A] text-white font-semibold">

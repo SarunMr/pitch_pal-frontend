@@ -38,3 +38,21 @@ export const registerSchema = z
   });
 
 export type RegisterFormValues = z.infer<typeof registerSchema>;
+
+export const ForgotPasswordSchema = z.object({
+  email: z.string().email("Enter a valid email"),
+});
+
+export type ForgotPasswordFormData = z.infer<typeof ForgotPasswordSchema>;
+
+export const ResetPasswordSchema = z
+  .object({
+    newPassword: z.string().min(6, "Min 6 characters"),
+    confirmPassword: z.string().min(6, "Min 6 characters"),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export type ResetPasswordFormData = z.infer<typeof ResetPasswordSchema>;

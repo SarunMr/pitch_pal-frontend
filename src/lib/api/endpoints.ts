@@ -5,6 +5,8 @@ export const API = {
     WHOAMI: "/auth/whoami",
     UPDATE_PROFILE: "/auth/update",
     RESET_PASSWORD: "/auth/reset-password",
+    GOOGLE_AUTH: "/auth/google",
+    FORGOT_PASSWORD: "/auth/forgot-password",
   },
   INVESTOR: {
     // future

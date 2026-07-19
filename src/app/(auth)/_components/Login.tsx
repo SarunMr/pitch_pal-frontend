@@ -13,6 +13,9 @@ import { ROUTES } from "@/constants/routes";
 import { handleLogin } from "@/lib/actions/auth.actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { GoogleLogin } from "@react-oauth/google";
+import { googleAuth } from "@/lib/api/auth/auth.api";
+import { setTokenCookie, storeUserData } from "@/lib/cookie";
 
 // ── Google Icon ───────────────────────────────────────────────────────────────
 function GoogleIcon() {
@@ -125,20 +128,45 @@ export default function Login() {
         </div>
 
         {/* Google Button */}
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full h-10 font-medium gap-2.5"
-          onClick={handleGoogle}
-          disabled={isGoogleLoading}
-        >
-          {isGoogleLoading ? (
-            <span className="size-4 rounded-full border-2 border-muted-foreground border-t-foreground animate-spin" />
-          ) : (
-            <GoogleIcon />
-          )}
-          Continue with Google
-        </Button>
+        <div className="w-full flex justify-center">
+          <GoogleLogin
+            onSuccess={async (credentialResponse) => {
+              try {
+                const res = await googleAuth(credentialResponse.credential!);
+                const resData = res.data || res;
+                const token = resData.token || resData.accessToken;
+                const user = resData.user;
+                const needsOnboarding = resData.needsOnboarding || !user?.role;
+
+                if (token && user) {
+                  await setTokenCookie(token);
+                  await storeUserData(user);
+                  toast.success("Google login successful!");
+                  
+                  if (needsOnboarding || !user.role) {
+                    router.push(ROUTES.ONBOARDING);
+                  } else if (user.role === "admin") {
+                    router.push(ROUTES.DASHBOARD.ADMIN);
+                  } else if (user.role === "entrepreneur") {
+                    router.push(ROUTES.DASHBOARD.ENTREPRENEUR);
+                  } else {
+                    router.push(ROUTES.DASHBOARD.INVESTOR);
+                  }
+                } else {
+                  toast.error("Failed to retrieve authentication token");
+                }
+              } catch (error: any) {
+                toast.error(error.message || "Google sign in failed");
+              }
+            }}
+            onError={() => {
+              toast.error("Google sign in was unsuccessful");
+            }}
+            text="continue_with"
+            shape="rectangular"
+            width="384px"
+          />
+        </div>
 
         {/* Divider */}
         <div className="flex items-center gap-3">
@@ -186,7 +214,7 @@ export default function Login() {
                 Password
               </Label>
               <Link
-                href={ROUTES.HOME}
+                href={ROUTES.FORGOT_PASSWORD}
                 className="text-xs text-primary hover:underline underline-offset-4 font-medium"
               >
                 Forgot password?
