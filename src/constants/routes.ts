@@ -15,6 +15,8 @@ export const ROUTES = {
   ADMIN_USERS_EDIT: (id: string) => `/admin/users/${id}/edit`,
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
+  KYC: "/kyc",
+  ADMIN_KYC: "/admin/kyc",
 } as const;
 
 export type AppRoutes = typeof ROUTES;

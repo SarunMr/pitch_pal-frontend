@@ -14,13 +14,32 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUserData } from "@/lib/cookie";
 import { handleLogout } from "@/lib/actions/auth.actions";
+import { getKYCStatusAction, getAdminKYCListAction } from "@/lib/actions/kyc.actions";
+import { Shield } from "lucide-react";
 
 export const DashboardNavbar = () => {
   const [user, setUser] = useState<any>(null);
+  const [kycStatus, setKycStatus] = useState<string>("none");
+  const [adminPendingKycCount, setAdminPendingKycCount] = useState<number>(0);
 
   const fetchUser = async () => {
     const data = await getUserData();
     setUser(data);
+    
+    // Fetch KYC info based on role
+    if (data) {
+      try {
+        if (data.role === "admin") {
+          const res = await getAdminKYCListAction("pending", 1, 1);
+          if (res?.success) setAdminPendingKycCount(res.data?.total || 0);
+        } else {
+          const res = await getKYCStatusAction();
+          if (res?.data) setKycStatus(res.data.kycStatus);
+        }
+      } catch (err) {
+        console.error("Failed to fetch KYC info for navbar", err);
+      }
+    }
   };
 
   useEffect(() => {
@@ -51,12 +70,37 @@ export const DashboardNavbar = () => {
           >
             Dashboard
           </a>
-          {user?.role === "admin" && (
+          {user?.role === "admin" ? (
+            <>
+              <a
+                href="/admin/users"
+                className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
+              >
+                Users
+              </a>
+              <a
+                href="/admin/kyc"
+                className="flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
+              >
+                <Shield className="w-4 h-4" />
+                KYC Queue
+                {adminPendingKycCount > 0 && (
+                  <span className="flex h-5 items-center justify-center rounded-full bg-amber-100 px-2 text-[10px] font-bold text-amber-600">
+                    {adminPendingKycCount}
+                  </span>
+                )}
+              </a>
+            </>
+          ) : (
             <a
-              href="/admin/users"
-              className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
+              href="/kyc"
+              className="flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
             >
-              Users
+              <Shield className="w-4 h-4" />
+              KYC Verification
+              {(kycStatus === "pending" || kycStatus === "none") && (
+                <span className="flex h-2 w-2 rounded-full bg-amber-500" />
+              )}
             </a>
           )}
           <a href="#" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">

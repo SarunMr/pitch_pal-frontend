@@ -25,7 +25,7 @@ const createUserSchema = z.object({
     .string()
     .min(6, "Password must be at least 6 characters"),
   role: z.enum(["entrepreneur", "investor", "admin"], {
-    required_error: "Role is required",
+    message: "Role is required",
   }),
 });
 
