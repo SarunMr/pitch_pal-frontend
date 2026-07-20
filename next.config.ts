@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
     // to avoid "resolved to private ip" security error
     unoptimized: true,
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "100mb",
+    },
+  },
 };
 
 export default nextConfig;
