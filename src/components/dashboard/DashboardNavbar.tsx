@@ -70,13 +70,18 @@ export const DashboardNavbar = () => {
           >
             Dashboard
           </a>
-          {user?.role === "admin" ? (
+
+          {/* Admin Nav */}
+          {user?.role === "admin" && (
             <>
+              <a href="/admin/users" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
+                Users
+              </a>
               <a
-                href="/admin/users"
+                href="/admin/pitches"
                 className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
               >
-                Users
+                Pitch Queue
               </a>
               <a
                 href="/admin/kyc"
@@ -91,24 +96,45 @@ export const DashboardNavbar = () => {
                 )}
               </a>
             </>
-          ) : (
-            <a
-              href="/kyc"
-              className="flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
-            >
-              <Shield className="w-4 h-4" />
-              KYC Verification
-              {(kycStatus === "pending" || kycStatus === "none") && (
-                <span className="flex h-2 w-2 rounded-full bg-amber-500" />
-              )}
-            </a>
           )}
-          <a href="#" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
-            Explore
-          </a>
-          <a href="#" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
-            Portfolio
-          </a>
+
+          {/* Entrepreneur Nav */}
+          {user?.role === "entrepreneur" && (
+            <>
+              <a href="/entrepreneur/pitches" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
+                My Pitches
+              </a>
+              <a
+                href="/kyc"
+                className="flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
+              >
+                <Shield className="w-4 h-4" />
+                KYC
+                {(kycStatus === "pending" || kycStatus === "none") && (
+                  <span className="flex h-2 w-2 rounded-full bg-amber-500" />
+                )}
+              </a>
+            </>
+          )}
+
+          {/* Investor Nav */}
+          {user?.role === "investor" && (
+            <>
+              <a href="/investor/pitches" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
+                Marketplace
+              </a>
+              <a
+                href="/kyc"
+                className="flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
+              >
+                <Shield className="w-4 h-4" />
+                KYC
+                {(kycStatus === "pending" || kycStatus === "none") && (
+                  <span className="flex h-2 w-2 rounded-full bg-amber-500" />
+                )}
+              </a>
+            </>
+          )}
         </nav>
 
         {/* Right Side */}
