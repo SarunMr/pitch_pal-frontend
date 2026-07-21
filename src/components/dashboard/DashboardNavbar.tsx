@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { TrendingUp, User as UserIcon, Settings, LogOut } from "lucide-react";
+import { TrendingUp, User as UserIcon, Settings, LogOut, Briefcase, Rss } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -71,6 +71,17 @@ export const DashboardNavbar = () => {
             Dashboard
           </a>
 
+          {/* Feed — visible to entrepreneur and investor */}
+          {(user?.role === "entrepreneur" || user?.role === "investor") && (
+            <a
+              href="/feed"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
+            >
+              <Rss className="w-4 h-4" />
+              Feed
+            </a>
+          )}
+
           {/* Admin Nav */}
           {user?.role === "admin" && (
             <>
@@ -132,6 +143,13 @@ export const DashboardNavbar = () => {
                 {(kycStatus === "pending" || kycStatus === "none") && (
                   <span className="flex h-2 w-2 rounded-full bg-amber-500" />
                 )}
+              </a>
+              <a
+                href="/investor/portfolio"
+                className="flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
+              >
+                <Briefcase className="w-4 h-4" />
+                Portfolio
               </a>
             </>
           )}
