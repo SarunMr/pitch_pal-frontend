@@ -136,16 +136,13 @@ export default function Login() {
                 const resData = res.data || res;
                 const token = resData.token || resData.accessToken;
                 const user = resData.user;
-                const needsOnboarding = resData.needsOnboarding || !user?.role;
 
                 if (token && user) {
                   await setTokenCookie(token);
                   await storeUserData(user);
                   toast.success("Google login successful!");
-                  
-                  if (needsOnboarding || !user.role) {
-                    router.push(ROUTES.ONBOARDING);
-                  } else if (user.role === "admin") {
+
+                  if (user.role === "admin") {
                     router.push(ROUTES.DASHBOARD.ADMIN);
                   } else if (user.role === "entrepreneur") {
                     router.push(ROUTES.DASHBOARD.ENTREPRENEUR);
