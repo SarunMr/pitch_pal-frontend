@@ -2,7 +2,6 @@ export const ROUTES = {
   HOME: "/",
   LOGIN: "/login",
   REGISTER: "/register",
-  ONBOARDING: "/onboarding",
   UNAUTHORIZED: "/unauthorized",
   DASHBOARD: {
     INVESTOR: "/investor",
@@ -25,6 +24,10 @@ export const ROUTES = {
   // Investor
   INVESTOR_PITCHES: "/investor/pitches",
   INVESTOR_PITCH_DETAIL: (id: string) => `/investor/pitches/${id}`,
+  INVESTOR_PORTFOLIO: "/investor/portfolio",
+  // Feed (shared)
+  FEED: "/feed",
+  FEED_MY: "/feed/my",
   // Auth
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
