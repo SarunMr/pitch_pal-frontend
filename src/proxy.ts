@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const publicRoutes = ["/login", "/register", "/onboarding"];
+const publicRoutes = ["/login", "/register"];
 const adminRoutes = ["/admin"];
 const entrepreneurRoutes = ["/entrepreneur"];
 const investorRoutes = ["/investor"];
@@ -64,7 +64,6 @@ export const config = {
     "/entrepreneur/:path*",
     "/admin/:path*",
     "/profile/:path*",
-    "/onboarding",
     "/login",
     "/register",
   ],
