@@ -20,6 +20,13 @@ import {
   adminReviewPitch,
   adminHandleEditRequest,
   PitchQueryParams,
+  generateAIScore,
+  getAIScore,
+  invest,
+  getPortfolio,
+  getPortfolioById,
+  getPitchInvestors,
+  getRecentInvestors,
 } from "../api/pitch/pitch.api";
 
 // ── PUBLIC ACTIONS ────────────────────────────────────────────────────────────
@@ -211,6 +218,84 @@ export const adminHandleEditRequestAction = async (id: string, data: { approve: 
     return result;
   } catch (error: any) {
     return { success: false, message: error?.message || "Failed to handle edit request" };
+  }
+};
+
+// ── PHASE 4 & 5 (AI Score & Investment) ACTIONS ───────────────────────────────
+
+export const generateAIScoreAction = async (pitchId: string) => {
+  try {
+    const token = await getTokenCookie();
+    if (!token) return { success: false, message: "Unauthorized" };
+    const result = await generateAIScore(pitchId, token);
+    revalidatePath(`/entrepreneur/pitches/${pitchId}`);
+    return { success: true, data: result.data };
+  } catch (error: any) {
+    return { success: false, message: error?.message || "Failed to generate AI score" };
+  }
+};
+
+export const getAIScoreAction = async (pitchId: string) => {
+  try {
+    const result = await getAIScore(pitchId);
+    return { success: true, data: result.data };
+  } catch (error: any) {
+    return { success: false, message: error?.message || "Failed to fetch AI score" };
+  }
+};
+
+export const investAction = async (pitchId: string, amount: number, tierType: string) => {
+  try {
+    const token = await getTokenCookie();
+    if (!token) return { success: false, message: "Unauthorized" };
+    const result = await invest(pitchId, amount, tierType, token);
+    revalidatePath(`/investor/pitches/${pitchId}`);
+    revalidatePath('/investor/portfolio');
+    return { success: true, data: result.data };
+  } catch (error: any) {
+    return { success: false, message: error?.message || "Failed to process investment" };
+  }
+};
+
+export const getPortfolioAction = async (page: number = 1, limit: number = 10) => {
+  try {
+    const token = await getTokenCookie();
+    if (!token) return { success: false, message: "Unauthorized", data: null };
+    const result = await getPortfolio(page, limit, token);
+    return { success: true, data: result.data };
+  } catch (error: any) {
+    return { success: false, message: error?.message || "Failed to fetch portfolio", data: null };
+  }
+};
+
+export const getPortfolioByIdAction = async (id: string) => {
+  try {
+    const token = await getTokenCookie();
+    if (!token) return { success: false, message: "Unauthorized" };
+    const result = await getPortfolioById(id, token);
+    return { success: true, data: result.data };
+  } catch (error: any) {
+    return { success: false, message: error?.message || "Failed to fetch investment" };
+  }
+};
+
+export const getPitchInvestorsAction = async (pitchId: string, page: number = 1) => {
+  try {
+    const token = await getTokenCookie();
+    if (!token) return { success: false, message: "Unauthorized", data: null };
+    const result = await getPitchInvestors(pitchId, page, token);
+    return { success: true, data: result.data };
+  } catch (error: any) {
+    return { success: false, message: error?.message || "Failed to fetch pitch investors", data: null };
+  }
+};
+
+export const getRecentInvestorsAction = async (pitchId: string) => {
+  try {
+    const result = await getRecentInvestors(pitchId);
+    return { success: true, data: result.data };
+  } catch (error: any) {
+    return { success: false, message: error?.message || "Failed to fetch recent investors", data: null };
   }
 };
 

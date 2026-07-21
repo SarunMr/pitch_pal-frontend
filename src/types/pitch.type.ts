@@ -86,6 +86,8 @@ export interface IPitch {
   equityOffered: number;
   minInvestment: number;
   maxInvestment?: number;
+  valuationCap?: number;
+  tiers?: any[];
   
   // Media
   coverImageUrl?: string;
@@ -117,4 +119,75 @@ export interface IPitch {
   submittedAt?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+// ── AI Score (Phase 4) ────────────────────────────────────────────────────────
+
+export interface IAIScoreBreakdown {
+  clarity: number;
+  videoQuality: number;
+  teamStrength: number;
+  marketOpportunity: number;
+  financialRealism: number;
+  dealStructure: number;
+}
+
+export interface IAISuggestion {
+  type: 'warning' | 'info' | 'success';
+  text: string;
+}
+
+export interface IAIScore {
+  hasScore: boolean;
+  score?: number;
+  grade?: 'A' | 'B' | 'C';
+  breakdown?: IAIScoreBreakdown;
+  suggestions?: IAISuggestion[];
+  generatedAt?: string;
+  message?: string;
+}
+
+// ── Investment System (Phase 5) ───────────────────────────────────────────────
+
+export interface IInvestment {
+  _id: string;
+  investorId: string | { _id: string; name: string; email: string; avatar?: string };
+  pitchId: string | {
+    _id: string;
+    title: string;
+    sector?: string;
+    industry?: string;
+    province?: string;
+    status: string;
+    fundingGoal: number;
+    fundingRaised: number;
+    equityOffered: number;
+    valuationCap?: number;
+    thumbnailUrl?: string;
+    expiresAt?: string;
+  };
+  amount: number;
+  tierType: string;
+  equityPercent: number;
+  isMock: boolean;
+  isSigned: boolean;
+  paymentStatus: 'pending' | 'completed' | 'failed';
+  paymentGateway: string;
+  paymentRef: string;
+  createdAt: string;
+}
+
+export interface IPortfolioSummary {
+  totalInvested: number;
+  totalInvestments: number;
+  pitchCount: number;
+}
+
+export interface IPortfolioResponse {
+  investments: IInvestment[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  summary: IPortfolioSummary;
 }
