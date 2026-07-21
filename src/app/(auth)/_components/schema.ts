@@ -24,6 +24,9 @@ export const registerSchema = z
         "Username can only contain letters, numbers, and underscores",
       ),
     email: z.email("Enter a valid email address"),
+    role: z.enum(["investor", "entrepreneur"], {
+      message: "Please select a role to continue",
+    }),
     password: z
       .string()
       .min(1, "Password is required")
