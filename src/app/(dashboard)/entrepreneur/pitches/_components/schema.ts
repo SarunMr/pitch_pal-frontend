@@ -90,7 +90,7 @@ export type Step3FormData = z.infer<typeof Step3Schema>;
 // ── Wizard Step 4: Tiers ──────────────────────────────────────────────────────
 
 export const TierSchema = z.object({
-  name: z.string().min(1, "Tier name is required"),
+  name: z.enum(["supporter", "stakeholder", "partner"], { message: "Select a valid tier type" }),
   minimumInvestment: z.coerce.number().min(1, "Minimum investment must be greater than 0"),
   maximumInvestment: z.coerce.number().optional().or(z.literal("")),
   benefits: z.string().min(1, "At least one benefit is required"), // We'll parse comma-separated

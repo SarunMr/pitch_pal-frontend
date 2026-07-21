@@ -552,7 +552,12 @@ export default function PitchEditForm({ pitch, tiers }: PitchEditFormProps) {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <Field label="Tier Name *" error={errors.tiers?.[idx]?.name?.message}>
-                        <input {...form.register(`tiers.${idx}.name`)} className={inputCls} placeholder="e.g. Platinum Partner" />
+                        <select {...form.register(`tiers.${idx}.name`)} className={inputCls}>
+                          <option value="">Select a tier...</option>
+                          <option value="supporter">Supporter</option>
+                          <option value="stakeholder">Stakeholder</option>
+                          <option value="partner">Partner</option>
+                        </select>
                       </Field>
                       <Field label="Benefits (comma-separated) *" error={errors.tiers?.[idx]?.benefits?.message}>
                         <input {...form.register(`tiers.${idx}.benefits`)} className={inputCls} placeholder="e.g. Board seat, Monthly reports" />

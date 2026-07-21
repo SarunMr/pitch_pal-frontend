@@ -355,7 +355,7 @@ export default function PitchListTable({ pitches }: PitchListTableProps) {
                   )}
                 </td>
                 <td className="py-3 px-4 text-muted-foreground text-xs">
-                  {new Date(pitch.createdAt).toLocaleDateString()}
+                  {new Date(pitch.createdAt).toLocaleDateString("en-US")}
                 </td>
                 <td className="py-3 px-4">
                   <div className="flex items-center gap-1.5 justify-end">

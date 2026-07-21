@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { ChevronRight, ChevronLeft, Save, Upload, Plus, Trash2 } from "lucide-react";
+import { ChevronRight, ChevronLeft, Save, Upload, Plus, Trash2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import {
@@ -20,6 +20,8 @@ import {
 } from "./schema";
 import { createPitchAction, updatePitchAction, uploadPitchVideoAction, submitPitchAction, addTiersAction } from "@/lib/actions/pitch.actions";
 import { IPitch } from "@/types/pitch.type";
+import { AIPitchScore } from "./AIPitchScore";
+import CreatePostDialog from "../../../feed/_components/CreatePostDialog";
 
 interface PitchWizardProps {
   initialData?: IPitch;
@@ -34,6 +36,9 @@ export default function PitchWizard({ initialData }: PitchWizardProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [showAIScore, setShowAIScore] = useState(false);
+  const [showSharePrompt, setShowSharePrompt] = useState(false);
+  const [submittedPitchTitle, setSubmittedPitchTitle] = useState("");
 
   // Forms
   const form1 = useForm<Step1FormData>({
@@ -77,8 +82,8 @@ export default function PitchWizard({ initialData }: PitchWizardProps) {
   const form4 = useForm<Step4FormData>({
     resolver: zodResolver(Step4Schema) as any,
     defaultValues: {
-      // If we don't have tiers populated in initialData, start with 1 empty tier
-      tiers: [{ name: "", minimumInvestment: 1000, benefits: "", equityPercentage: 0, availableSlots: 10 }],
+      // If we don't have tiers populated in initialData, start with 1 default tier
+      tiers: [{ name: "supporter", minimumInvestment: 1000, benefits: "", equityPercentage: 0, availableSlots: 10 }],
     },
   });
 
@@ -214,7 +219,8 @@ export default function PitchWizard({ initialData }: PitchWizardProps) {
       if (!resSubmit.success) throw new Error(resSubmit.message);
       
       toast.success("Pitch submitted successfully!");
-      router.push(isAdmin ? "/admin/pitches" : "/entrepreneur/pitches");
+      setSubmittedPitchTitle(resSubmit.data?.title || "my pitch");
+      setShowSharePrompt(true);
     } catch (err: any) {
       toast.error(err.message || "Failed to submit pitch");
     } finally {
@@ -514,7 +520,7 @@ export default function PitchWizard({ initialData }: PitchWizardProps) {
               </div>
               <button
                 type="button"
-                onClick={() => appendTier({ name: "", minimumInvestment: 1000, benefits: "", equityPercentage: 0, availableSlots: 10 })}
+                onClick={() => appendTier({ name: "supporter", minimumInvestment: 1000, benefits: "", equityPercentage: 0, availableSlots: 10 })}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border text-xs font-medium hover:bg-accent transition-colors"
               >
                 <Plus size={14} /> Add Tier
@@ -536,11 +542,15 @@ export default function PitchWizard({ initialData }: PitchWizardProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pr-10">
                   <div className="space-y-1">
                     <label className="text-xs font-medium text-foreground">Tier Name</label>
-                    <input
+                    <select
                       {...form4.register(`tiers.${index}.name`)}
                       className="w-full h-9 px-3 rounded-md border border-input bg-white text-sm"
-                      placeholder="e.g. Platinum Partner"
-                    />
+                    >
+                      <option value="">Select a tier...</option>
+                      <option value="supporter">Supporter</option>
+                      <option value="stakeholder">Stakeholder</option>
+                      <option value="partner">Partner</option>
+                    </select>
                   </div>
                   <div className="space-y-1">
                     <label className="text-xs font-medium text-foreground">Benefits (comma separated)</label>
@@ -622,6 +632,32 @@ export default function PitchWizard({ initialData }: PitchWizardProps) {
             {videoFile && <p className="text-xs text-emerald-600 font-medium">{videoFile.name} selected</p>}
           </div>
 
+          {pitchId && (
+            <div className="pt-4 border-t border-border">
+              {!showAIScore ? (
+                <button
+                  type="button"
+                  onClick={() => setShowAIScore(true)}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-green-200 bg-green-50 text-green-700 font-semibold hover:bg-green-100 transition-colors"
+                >
+                  <Sparkles size={18} /> ✨ Check AI Pitch Score
+                </button>
+              ) : (
+                <div className="space-y-4 bg-gray-50 p-6 rounded-xl border">
+                  <AIPitchScore pitchId={pitchId} />
+                  <div className="text-center pt-4 border-t">
+                    <button 
+                      onClick={() => setShowAIScore(false)}
+                      className="text-sm font-medium text-gray-500 hover:text-gray-800 underline"
+                    >
+                      Hide Score
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="flex justify-between pt-4 border-t border-border">
             <button
               type="button"
@@ -638,6 +674,42 @@ export default function PitchWizard({ initialData }: PitchWizardProps) {
               <Save size={16} />
               {isSubmitting ? "Submitting..." : "Submit Pitch"}
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Share Prompt Modal */}
+      {showSharePrompt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+          <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 text-center space-y-4 z-10">
+            <div className="h-12 w-12 rounded-full bg-emerald-100 flex items-center justify-center mx-auto text-emerald-600">
+              <Sparkles size={24} />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-gray-900">Share the good news!</h3>
+              <p className="text-sm text-gray-500 mt-1">
+                Your pitch "{submittedPitchTitle}" is now under review. Let the community know what you're working on.
+              </p>
+            </div>
+            <div className="flex gap-3 justify-center pt-2">
+              <button
+                onClick={() => router.push(isAdmin ? "/admin/pitches" : "/entrepreneur/pitches")}
+                className="px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+              >
+                Skip for now
+              </button>
+              <CreatePostDialog
+                autoOpen={true}
+                prefillContent={`I just submitted my pitch for ${submittedPitchTitle}! 🚀 Check it out soon.`}
+                onPostCreated={() => {
+                  router.push("/feed/my");
+                }}
+                onEditDone={() => {
+                  router.push(isAdmin ? "/admin/pitches" : "/entrepreneur/pitches");
+                }}
+              />
+            </div>
           </div>
         </div>
       )}
