@@ -38,5 +38,23 @@ export const API = {
     MILESTONES: (id: string) => `/v1/pitches/${id}/milestones`,
     VIDEO: (id: string) => `/v1/pitches/${id}/video`,
     REQUEST_EDIT: (id: string) => `/v1/pitches/${id}/request-edit`,
+    // Phase 4 & 5
+    PITCH_AI_SCORE: (id: string) => `/v1/pitches/${id}/ai-score`,
+    PITCH_INVEST: (pitchId: string) => `/v1/pitches/${pitchId}/invest`,
+    PITCH_INVESTORS: (pitchId: string) => `/v1/pitches/${pitchId}/investors`,
+    PITCH_INVESTORS_RECENT: (pitchId: string) => `/v1/pitches/${pitchId}/investors/recent`,
+    PORTFOLIO: '/v1/portfolio',
+    PORTFOLIO_BY_ID: (id: string) => `/v1/portfolio/${id}`,
+  },
+  POST: {
+    FEED: "/v1/posts/feed",
+    MY: "/v1/posts/my-posts",
+    CREATE: "/v1/posts",
+    UPDATE: (id: string) => `/v1/posts/${id}`,
+    DELETE: (id: string) => `/v1/posts/${id}`,
+    COMMENTS: (postId: string) => `/v1/posts/${postId}/comments`,
+    COMMENT_UPDATE: (commentId: string) => `/v1/posts/comments/${commentId}`,
+    COMMENT_DELETE: (commentId: string) => `/v1/posts/comments/${commentId}`,
+    REACTIONS: (postId: string) => `/v1/posts/${postId}/reactions`,
   },
 };

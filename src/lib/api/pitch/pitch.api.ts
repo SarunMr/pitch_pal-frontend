@@ -206,3 +206,80 @@ export const adminHandleEditRequest = async (id: string, data: { approve: boolea
     throw new Error(error?.response?.data?.message || "Failed to handle edit request");
   }
 };
+
+// ── PHASE 4 & 5 (AI Score & Investment) ───────────────────────────────────────
+
+export const generateAIScore = async (pitchId: string, token: string) => {
+  try {
+    const response = await axiosInstance.post(API.PITCH.PITCH_AI_SCORE(pitchId), {}, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message || "Failed to generate AI score");
+  }
+};
+
+export const getAIScore = async (pitchId: string) => {
+  try {
+    const response = await axiosInstance.get(API.PITCH.PITCH_AI_SCORE(pitchId));
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message || "Failed to fetch AI score");
+  }
+};
+
+export const invest = async (pitchId: string, amount: number, tierType: string, token: string) => {
+  try {
+    const response = await axiosInstance.post(API.PITCH.PITCH_INVEST(pitchId), { amount, tierType }, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message || "Failed to process investment");
+  }
+};
+
+export const getPortfolio = async (page: number = 1, limit: number = 10, token: string) => {
+  try {
+    const response = await axiosInstance.get(API.PITCH.PORTFOLIO, {
+      params: { page, limit },
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message || "Failed to fetch portfolio");
+  }
+};
+
+export const getPortfolioById = async (id: string, token: string) => {
+  try {
+    const response = await axiosInstance.get(API.PITCH.PORTFOLIO_BY_ID(id), {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message || "Failed to fetch investment");
+  }
+};
+
+export const getPitchInvestors = async (pitchId: string, page: number = 1, token: string) => {
+  try {
+    const response = await axiosInstance.get(API.PITCH.PITCH_INVESTORS(pitchId), {
+      params: { page, limit: 10 },
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message || "Failed to fetch pitch investors");
+  }
+};
+
+export const getRecentInvestors = async (pitchId: string) => {
+  try {
+    const response = await axiosInstance.get(API.PITCH.PITCH_INVESTORS_RECENT(pitchId));
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message || "Failed to fetch recent investors");
+  }
+};
