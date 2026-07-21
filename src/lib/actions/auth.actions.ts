@@ -12,7 +12,7 @@ import { setTokenCookie, storeUserData, clearAuthCookies, getTokenCookie } from 
 export const handleRegister = async (data: RegisterFormValues) => {
   try {
     const { confirmPassword, ...registerData } = data;
-    const result = await register({ ...registerData, role: "investor" });
+    const result = await register(registerData);
     if (result.data) {
       // Auto login after register to get the auth token
       const loginResult = await login({ email: data.email, password: data.password });
@@ -20,7 +20,7 @@ export const handleRegister = async (data: RegisterFormValues) => {
         const { token, user } = loginResult.data;
         await setTokenCookie(token);
         await storeUserData(user);
-        return { success: true, message: "Registration successful!" };
+        return { success: true, message: "Registration successful!", role: user.role as string };
       } else {
         return { success: false, message: loginResult.message || "Auto-login failed" };
       }

@@ -45,3 +45,30 @@ export const updateUser = async (data: FormData, token: string) => {
     throw new Error(error?.response?.data?.message || "Update user failed");
   }
 };
+
+export const googleAuth = async (idToken: string) => {
+  try {
+    const response = await axiosInstance.post(API.AUTH.GOOGLE_AUTH, { idToken });
+    return response.data;
+  } catch (error: Error | any) {
+    throw new Error(error?.response?.data?.message || "Google auth failed");
+  }
+};
+
+export const forgotPassword = async (email: string) => {
+  try {
+    const response = await axiosInstance.post(API.AUTH.FORGOT_PASSWORD, { email });
+    return response.data;
+  } catch (error: Error | any) {
+    throw new Error(error?.response?.data?.message || "Forgot password request failed");
+  }
+};
+
+export const resetPassword = async (token: string, newPassword: string) => {
+  try {
+    const response = await axiosInstance.post(API.AUTH.RESET_PASSWORD, { token, newPassword });
+    return response.data;
+  } catch (error: Error | any) {
+    throw new Error(error?.response?.data?.message || "Reset password failed");
+  }
+};

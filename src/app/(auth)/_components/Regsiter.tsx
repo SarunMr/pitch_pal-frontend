@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Eye,
@@ -12,6 +12,8 @@ import {
   ArrowRight,
   TrendingUp,
   Check,
+  Briefcase,
+  Lightbulb,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -93,6 +95,59 @@ function PasswordStrength({ password }: { password: string }) {
   );
 }
 
+// ── Role card ─────────────────────────────────────────────────────────────────
+type Role = "investor" | "entrepreneur";
+
+interface RoleCardProps {
+  role: Role;
+  selected: boolean;
+  onSelect: () => void;
+}
+
+const ROLE_META: Record<Role, { icon: React.ElementType; label: string; description: string }> = {
+  investor: {
+    icon: Briefcase,
+    label: "Investor",
+    description: "Fund Nepal's next wave of startups",
+  },
+  entrepreneur: {
+    icon: Lightbulb,
+    label: "Entrepreneur",
+    description: "Pitch your idea and raise capital",
+  },
+};
+
+function RoleCard({ role, selected, onSelect }: RoleCardProps) {
+  const { icon: Icon, label, description } = ROLE_META[role];
+  return (
+    <button
+      id={`role-${role}`}
+      type="button"
+      onClick={onSelect}
+      className={cn(
+        "flex-1 flex flex-col items-center gap-2 rounded-xl border-2 px-4 py-4 text-center transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+        selected
+          ? "border-primary bg-primary/5 shadow-sm"
+          : "border-border bg-background hover:border-primary/40 hover:bg-muted/40",
+      )}
+      aria-pressed={selected}
+    >
+      <span
+        className={cn(
+          "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
+          selected ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+        )}
+      >
+        <Icon size={18} />
+      </span>
+      <span className={cn("text-sm font-bold", selected ? "text-primary" : "text-foreground")}>
+        {label}
+      </span>
+      <span className="text-[11px] leading-tight text-muted-foreground">{description}</span>
+    </button>
+  );
+}
+
 // ── Register Component ────────────────────────────────────────────────────────
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -104,6 +159,7 @@ export default function Register() {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -118,7 +174,12 @@ export default function Register() {
       const result = await handleRegister(data);
       if (result.success) {
         toast.success(result.message || "Registration successful!");
-        router.push("/onboarding");
+        const role = result.role ?? data.role;
+        if (role === "entrepreneur") {
+          router.push(ROUTES.DASHBOARD.ENTREPRENEUR);
+        } else {
+          router.push(ROUTES.DASHBOARD.INVESTOR);
+        }
       } else {
         toast.error(result.message || "Registration failed");
       }
@@ -194,6 +255,30 @@ export default function Register() {
           className="space-y-4"
           noValidate
         >
+          {/* ── Role Selector ──────────────────────────────────── */}
+          <div className="space-y-1.5">
+            <Label className="text-sm font-semibold">I am joining as a…</Label>
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <div className="flex gap-3">
+                  <RoleCard
+                    role="investor"
+                    selected={field.value === "investor"}
+                    onSelect={() => field.onChange("investor")}
+                  />
+                  <RoleCard
+                    role="entrepreneur"
+                    selected={field.value === "entrepreneur"}
+                    onSelect={() => field.onChange("entrepreneur")}
+                  />
+                </div>
+              )}
+            />
+            <FieldError message={errors.role?.message} />
+          </div>
+
           {/* Username */}
           <div className="space-y-1.5">
             <Label htmlFor="username" className="text-sm font-semibold">
