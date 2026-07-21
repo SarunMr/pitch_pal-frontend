@@ -7,9 +7,12 @@ interface PitchDetailViewProps {
   pitch: IPitch;
   tiers: IInvestorTierDoc[];
   milestones: IMilestoneDoc[];
+  viewerRole?: "entrepreneur" | "investor" | "admin" | "public";
+  onInvestClick?: () => void;
+  recentInvestors?: any[];
 }
 
-export default function PitchDetailView({ pitch, tiers, milestones }: PitchDetailViewProps) {
+export default function PitchDetailView({ pitch, tiers, milestones, viewerRole = "public", onInvestClick, recentInvestors }: PitchDetailViewProps) {
   return (
     <div className="space-y-8">
       {/* Header & Video */}
@@ -114,7 +117,7 @@ export default function PitchDetailView({ pitch, tiers, milestones }: PitchDetai
                       <div className="flex items-center justify-between mb-1">
                         <span className="font-bold text-foreground">{m.title}</span>
                         <span className="text-[10px] font-medium text-muted-foreground uppercase">
-                          {new Date(m.targetDate).toLocaleDateString()}
+                          {new Date(m.targetDate).toLocaleDateString("en-US")}
                         </span>
                       </div>
                       <p className="text-sm text-slate-600 mb-2">{m.description}</p>
@@ -234,6 +237,45 @@ export default function PitchDetailView({ pitch, tiers, milestones }: PitchDetai
           </section>
         </div>
       </div>
+
+      {viewerRole === "investor" && pitch.status === "live" && onInvestClick && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgb(0,0,0,0.1)] z-40">
+          <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            
+            {recentInvestors && recentInvestors.length > 0 && (
+              <div className="flex items-center gap-3 w-full md:w-auto">
+                <span className="text-sm text-gray-500 font-medium">Recent investors:</span>
+                <div className="flex -space-x-2">
+                  {recentInvestors.slice(0, 5).map((inv: any, i: number) => (
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center overflow-hidden z-10 hover:z-20 transition-transform">
+                      {inv.investorId?.avatar ? (
+                        <img src={inv.investorId.avatar} alt="avatar" className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-xs font-bold text-gray-500">
+                          {inv.investorId?.name?.charAt(0) || 'U'}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                  {recentInvestors.length > 5 && (
+                    <div className="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center z-0">
+                      <span className="text-xs font-bold text-gray-600">+{recentInvestors.length - 5}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            {!recentInvestors || recentInvestors.length === 0 ? <div /> : null}
+
+            <button
+              onClick={onInvestClick}
+              className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-bold shadow-sm transition-colors text-lg"
+            >
+              Invest Now &rarr;
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

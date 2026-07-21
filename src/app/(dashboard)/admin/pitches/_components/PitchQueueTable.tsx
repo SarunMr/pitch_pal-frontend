@@ -125,7 +125,7 @@ export default function PitchQueueTable({ pitches }: PitchQueueTableProps) {
                 </span>
               </td>
               <td className="py-3 px-4 text-muted-foreground text-xs">
-                {pitch.submittedAt ? new Date(pitch.submittedAt).toLocaleDateString() : "-"}
+                {pitch.submittedAt ? new Date(pitch.submittedAt).toLocaleDateString("en-US") : "-"}
               </td>
               <td className="py-3 px-4">
                 <div className="flex justify-end gap-2">
