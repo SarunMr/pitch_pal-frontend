@@ -25,6 +25,13 @@ export const API = {
     PITCHES: "/v1/pitches/admin/queue",
     PITCH_STATUS: (id: string) => `/v1/pitches/admin/${id}/review`,
     PITCH_EDIT_REQUEST: (id: string) => `/v1/pitches/admin/${id}/edit-request`,
+    ANALYTICS_OVERVIEW: "/v1/admin/analytics/overview",
+    ANALYTICS_USERS: "/v1/admin/analytics/users",
+    ANALYTICS_PITCHES: "/v1/admin/analytics/pitches",
+    ANALYTICS_INVESTMENTS: "/v1/admin/analytics/investments",
+    REPORTS: "/v1/admin/reports",
+    RESOLVE_REPORT: (id: string) => `/v1/admin/reports/${id}/resolve`,
+    AUDIT_LOGS: "/v1/admin/audit-logs",
   },
   PITCH: {
     PUBLIC: "/v1/pitches",
@@ -56,5 +63,14 @@ export const API = {
     COMMENT_UPDATE: (commentId: string) => `/v1/posts/comments/${commentId}`,
     COMMENT_DELETE: (commentId: string) => `/v1/posts/comments/${commentId}`,
     REACTIONS: (postId: string) => `/v1/posts/${postId}/reactions`,
+  },
+  NOTIFICATIONS: {
+    ALL: "/v1/notifications",
+    READ: (id: string) => `/v1/notifications/${id}/read`,
+    READ_ALL: "/v1/notifications/read-all",
+    CLEAR_ALL: "/v1/notifications/clear-all",
+  },
+  REPORTS: {
+    CREATE: "/v1/reports",
   },
 };
