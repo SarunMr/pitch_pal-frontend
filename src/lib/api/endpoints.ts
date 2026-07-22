@@ -16,6 +16,10 @@ export const API = {
   ENTREPRENEUR: {
     // future
   },
+  USER: {
+    ALL: "/v1/users",
+    PROFILE: (id: string) => `/v1/users/${id}`,
+  },
   ADMIN: {
     USERS: "/admin/users",
     USER_BY_ID: (id: string) => `/admin/users/${id}`,
