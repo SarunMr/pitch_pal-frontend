@@ -16,6 +16,7 @@ import { getUserData } from "@/lib/cookie";
 import { handleLogout } from "@/lib/actions/auth.actions";
 import { getKYCStatusAction, getAdminKYCListAction } from "@/lib/actions/kyc.actions";
 import { Shield } from "lucide-react";
+import { NotificationBell } from "./NotificationBell";
 
 export const DashboardNavbar = () => {
   const [user, setUser] = useState<any>(null);
@@ -106,6 +107,15 @@ export const DashboardNavbar = () => {
                   </span>
                 )}
               </a>
+              <a href="/admin/analytics" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
+                Analytics
+              </a>
+              <a href="/admin/reports" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
+                Reports
+              </a>
+              <a href="/admin/audit-logs" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
+                Audit Logs
+              </a>
             </>
           )}
 
@@ -157,6 +167,7 @@ export const DashboardNavbar = () => {
 
         {/* Right Side */}
         <div className="flex items-center gap-4">
+          {user && <NotificationBell />}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger className="relative flex h-9 w-9 items-center justify-center rounded-full overflow-hidden border-2 border-[#1A6B4A]/20 focus:outline-none focus:ring-2 focus:ring-[#1A6B4A] focus:ring-offset-2 transition-all">
