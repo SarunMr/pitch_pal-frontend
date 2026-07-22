@@ -1,5 +1,6 @@
 import React from "react";
 import KYCGuard from "@/components/kyc/KYCGuard";
+import DashboardWarningBanner from "@/components/dashboard/DashboardWarningBanner";
 import { fetchMyPitchesAction } from "@/lib/actions/pitch.actions";
 import Link from "next/link";
 import {
@@ -44,10 +45,13 @@ export default async function EntrepreneurDashboard() {
 
   const totalRaised = pitches.reduce((sum, p) => sum + (p.fundingRaised ?? 0), 0);
   const totalGoal = pitches.reduce((sum, p) => sum + (p.fundingGoal ?? 0), 0);
+  const totalViews = pitches.reduce((sum, p) => sum + (p.viewCount ?? 0), 0);
+  const totalInvestors = pitches.reduce((sum, p) => sum + (p.investorCount ?? 0), 0);
 
   return (
-    <KYCGuard role="entrepreneur">
+    <>
       <div className="space-y-8">
+        <DashboardWarningBanner role="entrepreneur" />
         {/* Welcome Banner */}
         <div className="rounded-2xl bg-gradient-to-r from-[#1A6B4A] to-emerald-500 p-8 text-white shadow-lg overflow-hidden relative">
           <div className="absolute right-0 top-0 h-full w-1/3 opacity-10 flex items-center justify-end pr-8 pointer-events-none">
@@ -71,12 +75,14 @@ export default async function EntrepreneurDashboard() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {[
             { label: "Total Pitches", value: stats.total, icon: FileText, color: "text-primary bg-primary/10" },
             { label: "In Review", value: stats.submitted, icon: Clock, color: "text-amber-600 bg-amber-50" },
             { label: "Approved", value: stats.approved, icon: CheckCircle2, color: "text-emerald-600 bg-emerald-50" },
             { label: "Rejected", value: stats.rejected, icon: XCircle, color: "text-red-500 bg-red-50" },
+            { label: "Total Views", value: totalViews, icon: TrendingUp, color: "text-blue-500 bg-blue-50" },
+            { label: "Investors", value: totalInvestors, icon: PlusCircle, color: "text-purple-500 bg-purple-50" },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -190,6 +196,6 @@ export default async function EntrepreneurDashboard() {
           )}
         </div>
       </div>
-    </KYCGuard>
+    </>
   );
 }
