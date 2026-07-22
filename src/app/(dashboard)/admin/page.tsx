@@ -110,6 +110,72 @@ export default function AdminDashboard() {
             </div>
           </div>
         </a>
+
+        {/* Analytics Card */}
+        <a
+          href="/admin/analytics"
+          className="group block p-6 bg-white rounded-xl border border-border hover:border-purple-500/50 hover:shadow-md transition-all duration-200"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center group-hover:bg-purple-500 group-hover:text-white transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="font-bold text-foreground group-hover:text-purple-600 transition-colors">
+                Analytics
+              </h2>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Platform metrics and statistics
+              </p>
+            </div>
+          </div>
+        </a>
+
+        {/* Reports Card */}
+        <a
+          href="/admin/reports"
+          className="group block p-6 bg-white rounded-xl border border-border hover:border-orange-500/50 hover:shadow-md transition-all duration-200"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3Z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="font-bold text-foreground group-hover:text-orange-600 transition-colors">
+                Reports
+              </h2>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Review flagged content
+              </p>
+            </div>
+          </div>
+        </a>
+
+        {/* Audit Logs Card */}
+        <a
+          href="/admin/audit-logs"
+          className="group block p-6 bg-white rounded-xl border border-border hover:border-gray-500/50 hover:shadow-md transition-all duration-200"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-lg bg-gray-100 text-gray-600 flex items-center justify-center group-hover:bg-gray-600 group-hover:text-white transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="font-bold text-foreground group-hover:text-gray-600 transition-colors">
+                Audit Logs
+              </h2>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                System action history
+              </p>
+            </div>
+          </div>
+        </a>
       </div>
     </div>
   );
