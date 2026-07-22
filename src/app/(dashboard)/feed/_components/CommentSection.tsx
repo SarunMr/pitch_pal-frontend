@@ -181,7 +181,7 @@ export default function CommentSection({
                 <div className="flex items-center gap-2 mt-1 ml-1">
                   {(isOwner || isAdmin) && (
                     <>
-                      {isOwner && (
+                      {(isOwner || isAdmin) && (
                         <button
                           onClick={() => { setEditingId(comment._id); setEditContent(comment.content); }}
                           className="text-[10px] text-gray-400 hover:text-[#1A6B4A] transition-colors"

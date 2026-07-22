@@ -122,7 +122,7 @@ export default function PostCard({ post, currentUserId, currentUserRole, onDelet
           {/* Owner controls — only on custom posts */}
           {!isSystemPost && (isOwner || isAdmin) && (
             <div className="flex items-center gap-1 shrink-0">
-              {isOwner && (
+              {(isOwner || isAdmin) && (
                 <CreatePostDialog
                   editPost={post}
                   onPostCreated={(updated) => onUpdated({ ...post, ...updated })}
