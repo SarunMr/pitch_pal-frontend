@@ -1,5 +1,6 @@
 import React from "react";
 import KYCGuard from "@/components/kyc/KYCGuard";
+import DashboardWarningBanner from "@/components/dashboard/DashboardWarningBanner";
 import { fetchPublicPitchesAction } from "@/lib/actions/pitch.actions";
 import Link from "next/link";
 import {
@@ -25,8 +26,9 @@ export default async function InvestorDashboard() {
   const totalFunding = pitches.reduce((sum, p) => sum + (p.fundingGoal ?? 0), 0);
 
   return (
-    <KYCGuard role="investor">
+    <>
       <div className="space-y-8">
+        <DashboardWarningBanner role="investor" />
         {/* Welcome Banner */}
         <div className="rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8 text-white shadow-lg overflow-hidden relative">
           <div className="absolute right-0 top-0 h-full w-1/3 opacity-10 flex items-center justify-end pr-8 pointer-events-none">
@@ -155,6 +157,6 @@ export default async function InvestorDashboard() {
           )}
         </div>
       </div>
-    </KYCGuard>
+    </>
   );
 }

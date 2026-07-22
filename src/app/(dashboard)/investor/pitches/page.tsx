@@ -2,6 +2,7 @@ import { fetchPublicPitchesAction } from "@/lib/actions/pitch.actions";
 import PitchGrid from "./_components/PitchGrid";
 import MarketplaceFilters from "./_components/MarketplaceFilters";
 import KYCGuard from "@/components/kyc/KYCGuard";
+import DashboardWarningBanner from "@/components/dashboard/DashboardWarningBanner";
 import { Rocket } from "lucide-react";
 import Link from "next/link";
 
@@ -42,8 +43,9 @@ export default async function InvestorPitchesPage({ searchParams }: InvestorPitc
   const hasError = !result?.success;
 
   return (
-    <KYCGuard role="investor">
+    <>
       <div className="space-y-6">
+        <DashboardWarningBanner role="investor" />
         {/* Header */}
         <div className="bg-slate-900 rounded-2xl p-8 md:p-12 text-white overflow-hidden relative">
           <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
@@ -106,6 +108,6 @@ export default async function InvestorPitchesPage({ searchParams }: InvestorPitc
           </div>
         )}
       </div>
-    </KYCGuard>
+    </>
   );
 }
