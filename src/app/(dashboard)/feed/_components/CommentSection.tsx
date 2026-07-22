@@ -14,6 +14,7 @@ import {
 } from "@/lib/actions/post.actions";
 import { IComment } from "@/lib/api/posts/post.api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ReportDialog } from "@/components/ReportDialog";
 
 interface CommentSectionProps {
   postId: string;
@@ -176,23 +177,38 @@ export default function CommentSection({
               </div>
 
               {/* Actions */}
-              {!isEditing && (isOwner || isAdmin) && (
+              {!isEditing && (
                 <div className="flex items-center gap-2 mt-1 ml-1">
-                  {isOwner && (
-                    <button
-                      onClick={() => { setEditingId(comment._id); setEditContent(comment.content); }}
-                      className="text-[10px] text-gray-400 hover:text-[#1A6B4A] transition-colors"
-                    >
-                      Edit
-                    </button>
+                  {(isOwner || isAdmin) && (
+                    <>
+                      {isOwner && (
+                        <button
+                          onClick={() => { setEditingId(comment._id); setEditContent(comment.content); }}
+                          className="text-[10px] text-gray-400 hover:text-[#1A6B4A] transition-colors"
+                        >
+                          Edit
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleDelete(comment._id)}
+                        disabled={isPending}
+                        className="text-[10px] text-gray-400 hover:text-red-500 transition-colors"
+                      >
+                        Delete
+                      </button>
+                    </>
                   )}
-                  <button
-                    onClick={() => handleDelete(comment._id)}
-                    disabled={isPending}
-                    className="text-[10px] text-gray-400 hover:text-red-500 transition-colors"
-                  >
-                    Delete
-                  </button>
+                  {!isOwner && (
+                    <ReportDialog
+                      targetType="comment"
+                      targetId={comment._id}
+                      triggerElement={
+                        <button className="text-[10px] text-gray-400 hover:text-amber-600 transition-colors">
+                          Report
+                        </button>
+                      }
+                    />
+                  )}
                 </div>
               )}
             </div>

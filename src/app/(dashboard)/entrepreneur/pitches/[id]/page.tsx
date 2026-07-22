@@ -13,6 +13,7 @@ import KYCGuard from "@/components/kyc/KYCGuard";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { formatNPR, formatDate } from "@/lib/utils";
+import { ReportDialog } from "@/components/ReportDialog";
 
 interface EntrepreneurPitchDetailPageProps {
   params: Promise<{ id: string }>;
@@ -73,19 +74,23 @@ export default function EntrepreneurPitchDetailPage({ params }: EntrepreneurPitc
   return (
     <KYCGuard role="entrepreneur">
       <div className="space-y-6 pb-12">
-        <div className="flex items-center gap-4">
-          <Link
-            href="/entrepreneur/pitches"
-            className="p-2 -ml-2 rounded-lg hover:bg-slate-100 text-muted-foreground transition-colors"
-          >
-            <ChevronLeft size={20} />
-          </Link>
-          <div>
-            <h1 className="text-xl font-bold text-foreground">Pitch Dashboard</h1>
-            <p className="text-xs text-muted-foreground">
-              Manage your pitch and post updates for investors.
-            </p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link
+              href="/entrepreneur/pitches"
+              className="p-2 -ml-2 rounded-lg hover:bg-slate-100 text-muted-foreground transition-colors"
+            >
+              <ChevronLeft size={20} />
+            </Link>
+            <div>
+              <h1 className="text-xl font-bold text-foreground">Pitch Dashboard</h1>
+              <p className="text-xs text-muted-foreground">
+                Manage your pitch and post updates for investors.
+              </p>
+            </div>
           </div>
+          
+          <ReportDialog targetType="pitch" targetId={pitch._id} />
         </div>
 
         <PitchDetailView pitch={pitch} tiers={tiers} milestones={milestones} viewerRole="entrepreneur" />

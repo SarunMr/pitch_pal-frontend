@@ -12,6 +12,7 @@ import KYCGuard from "@/components/kyc/KYCGuard";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { InvestmentModal } from "../_components/InvestmentModal";
+import { ReportDialog } from "@/components/ReportDialog";
 
 interface InvestorPitchDetailPageProps {
   params: Promise<{ id: string }>;
@@ -73,19 +74,23 @@ export default function InvestorPitchDetailPage({ params }: InvestorPitchDetailP
   return (
     <KYCGuard role="investor">
       <div className="space-y-6 pb-24">
-        <div className="flex items-center gap-4">
-          <Link
-            href="/investor/pitches"
-            className="p-2 -ml-2 rounded-lg hover:bg-slate-100 text-muted-foreground transition-colors"
-          >
-            <ChevronLeft size={20} />
-          </Link>
-          <div>
-            <h1 className="text-xl font-bold text-foreground">Startup Profile</h1>
-            <p className="text-xs text-muted-foreground">
-              Review details, milestones, and investment tiers.
-            </p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link
+              href="/investor/pitches"
+              className="p-2 -ml-2 rounded-lg hover:bg-slate-100 text-muted-foreground transition-colors"
+            >
+              <ChevronLeft size={20} />
+            </Link>
+            <div>
+              <h1 className="text-xl font-bold text-foreground">Startup Profile</h1>
+              <p className="text-xs text-muted-foreground">
+                Review details, milestones, and investment tiers.
+              </p>
+            </div>
           </div>
+          
+          <ReportDialog targetType="pitch" targetId={pitch._id} />
         </div>
 
         <PitchDetailView 
