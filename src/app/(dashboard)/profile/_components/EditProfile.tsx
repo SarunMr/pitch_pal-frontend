@@ -146,14 +146,38 @@ export default function EditProfile({ user, onUserUpdate }: EditProfileProps) {
             {/* Form Fields */}
             <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
               {/* Read-only info */}
-              <div className="space-y-2 md:col-span-2 flex items-center justify-between bg-gray-50 p-4 rounded-lg">
-                <div>
-                  <Label className="text-gray-500 text-xs">Email Address (Read Only)</Label>
-                  <p className="font-medium text-gray-900">{user.email}</p>
+              <div className="space-y-4 md:col-span-2 bg-gray-50 p-4 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label className="text-gray-500 text-xs">Email Address (Read Only)</Label>
+                    <p className="font-medium text-gray-900">{user.email}</p>
+                  </div>
+                  <span className="px-3 py-1 bg-[#1A6B4A]/10 text-[#1A6B4A] rounded-full text-sm font-semibold capitalize">
+                    {user.role}
+                  </span>
                 </div>
-                <span className="px-3 py-1 bg-[#1A6B4A]/10 text-[#1A6B4A] rounded-full text-sm font-semibold capitalize">
-                  {user.role}
-                </span>
+                
+                {user.profileCompletion !== undefined && user.role !== "admin" && (
+                  <div className="pt-2 border-t border-gray-200 mt-2">
+                    <div className="flex justify-between text-xs mb-1.5">
+                      <span className="font-medium text-gray-700">Profile Completion</span>
+                      <span className={user.profileCompletion >= 75 ? "text-green-600 font-bold" : "text-amber-600 font-bold"}>
+                        {user.profileCompletion}%
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className={`h-2 rounded-full ${user.profileCompletion >= 75 ? 'bg-green-500' : 'bg-amber-500'}`}
+                        style={{ width: `${user.profileCompletion}%` }}
+                      />
+                    </div>
+                    {user.profileCompletion < 75 && (
+                      <p className="text-[10px] text-amber-600 mt-1.5">
+                        Complete at least 75% of your profile (add bio, phone, mock payment card, KYC) to enable transactions.
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">

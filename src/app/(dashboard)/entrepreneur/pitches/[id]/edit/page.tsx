@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import KYCGuard from "@/components/kyc/KYCGuard";
+import DashboardWarningBanner from "@/components/dashboard/DashboardWarningBanner";
 import PitchEditForm from "../../_components/PitchEditForm";
 import {
   fetchPitchByIdAction,
@@ -42,8 +42,9 @@ export default async function EditPitchPage({ params }: EditPitchPageProps) {
   const tiers: IInvestorTierDoc[] = tiersRes?.data ?? [];
 
   return (
-    <KYCGuard role="entrepreneur">
+    <>
       <div className="space-y-6">
+        <DashboardWarningBanner role="entrepreneur" />
         {/* Header */}
         <div className="flex items-center gap-4">
           <Link
@@ -62,6 +63,6 @@ export default async function EditPitchPage({ params }: EditPitchPageProps) {
 
         <PitchEditForm pitch={pitch} tiers={tiers} />
       </div>
-    </KYCGuard>
+    </>
   );
 }

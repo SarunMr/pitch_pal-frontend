@@ -118,32 +118,24 @@ const ROLE_META: Record<Role, { icon: React.ElementType; label: string; descript
 };
 
 function RoleCard({ role, selected, onSelect }: RoleCardProps) {
-  const { icon: Icon, label, description } = ROLE_META[role];
+  const { icon: Icon, label } = ROLE_META[role];
   return (
     <button
       id={`role-${role}`}
       type="button"
       onClick={onSelect}
       className={cn(
-        "flex-1 flex flex-col items-center gap-2 rounded-xl border-2 px-4 py-4 text-center transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+        "flex-1 flex items-center justify-center gap-2 rounded-lg border-2 px-3 py-2.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
         selected
-          ? "border-primary bg-primary/5 shadow-sm"
-          : "border-border bg-background hover:border-primary/40 hover:bg-muted/40",
+          ? "border-primary bg-primary text-primary-foreground shadow-sm"
+          : "border-input bg-background text-muted-foreground hover:border-primary/40 hover:bg-muted/40 hover:text-foreground",
       )}
       aria-pressed={selected}
     >
-      <span
-        className={cn(
-          "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
-          selected ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
-        )}
-      >
-        <Icon size={18} />
-      </span>
-      <span className={cn("text-sm font-bold", selected ? "text-primary" : "text-foreground")}>
+      <Icon size={16} />
+      <span className="text-sm font-semibold">
         {label}
       </span>
-      <span className="text-[11px] leading-tight text-muted-foreground">{description}</span>
     </button>
   );
 }

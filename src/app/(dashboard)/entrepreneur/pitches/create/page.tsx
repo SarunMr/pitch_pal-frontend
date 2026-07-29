@@ -1,6 +1,6 @@
 import { fetchPitchByIdAction } from "@/lib/actions/pitch.actions";
 import PitchWizard from "../_components/PitchWizard";
-import KYCGuard from "@/components/kyc/KYCGuard";
+import DashboardWarningBanner from "@/components/dashboard/DashboardWarningBanner";
 import { IPitch } from "@/types/pitch.type";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
@@ -29,8 +29,9 @@ export default async function CreatePitchPage({ searchParams }: CreatePitchPageP
   }
 
   return (
-    <KYCGuard role="entrepreneur">
+    <>
       <div className="space-y-6">
+        <DashboardWarningBanner role="entrepreneur" />
         <div className="flex items-center gap-4">
           <Link
             href="/entrepreneur/pitches"
@@ -50,6 +51,6 @@ export default async function CreatePitchPage({ searchParams }: CreatePitchPageP
 
         <PitchWizard initialData={initialData} />
       </div>
-    </KYCGuard>
+    </>
   );
 }

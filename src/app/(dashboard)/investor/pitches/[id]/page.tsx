@@ -8,7 +8,7 @@ import {
   getRecentInvestorsAction
 } from "@/lib/actions/pitch.actions";
 import PitchDetailView from "@/components/pitch/PitchDetailView";
-import KYCGuard from "@/components/kyc/KYCGuard";
+import DashboardWarningBanner from "@/components/dashboard/DashboardWarningBanner";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { InvestmentModal } from "../_components/InvestmentModal";
@@ -52,28 +52,29 @@ export default function InvestorPitchDetailPage({ params }: InvestorPitchDetailP
 
   if (isLoading) {
     return (
-      <KYCGuard role="investor">
+      <>
         <div className="space-y-4 animate-pulse">
           <div className="h-10 bg-gray-200 rounded-lg w-1/4"></div>
           <div className="h-[400px] bg-gray-200 rounded-xl w-full"></div>
         </div>
-      </KYCGuard>
+      </>
     );
   }
 
   if (!pitch) {
     return (
-      <KYCGuard role="investor">
+      <>
         <div className="p-8 text-center text-gray-500">
           Pitch not found
         </div>
-      </KYCGuard>
+      </>
     );
   }
 
   return (
-    <KYCGuard role="investor">
+    <>
       <div className="space-y-6 pb-24">
+        <DashboardWarningBanner role="investor" />
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
@@ -118,6 +119,6 @@ export default function InvestorPitchDetailPage({ params }: InvestorPitchDetailP
           />
         )}
       </div>
-    </KYCGuard>
+    </>
   );
 }

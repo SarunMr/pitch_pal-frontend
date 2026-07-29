@@ -115,6 +115,10 @@ export interface IPitch {
   // Delete Request
   deleteRequested?: boolean;
   
+  // Analytics (optional, populated by backend)
+  viewCount?: number;
+  investorCount?: number;
+  
   // Timestamps
   submittedAt?: string;
   createdAt: string;

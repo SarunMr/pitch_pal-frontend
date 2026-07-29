@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 export async function setTokenCookie(token: string) {
   const cookieStore = await cookies();
-  cookieStore.set({ name: "auth_token", value: token, path: "/", maxAge: 7 * 24 * 60 * 60 });
+  cookieStore.set({ name: "auth_token", value: token, path: "/", maxAge: 7 * 24 * 60 * 60, httpOnly: false });
 }
 
 export async function getTokenCookie() {

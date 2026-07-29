@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { TrendingUp, User as UserIcon, Settings, LogOut, Briefcase, Rss } from "lucide-react";
+import { User as UserIcon, LogOut, CreditCard, Shield } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,156 +15,58 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUserData } from "@/lib/cookie";
 import { handleLogout } from "@/lib/actions/auth.actions";
-import { getKYCStatusAction, getAdminKYCListAction } from "@/lib/actions/kyc.actions";
-import { Shield } from "lucide-react";
 import { NotificationBell } from "./NotificationBell";
 
 export const DashboardNavbar = () => {
   const [user, setUser] = useState<any>(null);
-  const [kycStatus, setKycStatus] = useState<string>("none");
-  const [adminPendingKycCount, setAdminPendingKycCount] = useState<number>(0);
+  const pathname = usePathname();
+  const router = useRouter();
 
   const fetchUser = async () => {
     const data = await getUserData();
     setUser(data);
-    
-    // Fetch KYC info based on role
-    if (data) {
-      try {
-        if (data.role === "admin") {
-          const res = await getAdminKYCListAction("pending", 1, 1);
-          if (res?.success) setAdminPendingKycCount(res.data?.total || 0);
-        } else {
-          const res = await getKYCStatusAction();
-          if (res?.data) setKycStatus(res.data.kycStatus);
-        }
-      } catch (err) {
-        console.error("Failed to fetch KYC info for navbar", err);
-      }
+  };
+
+  const onLogout = async () => {
+    try {
+      await handleLogout();
+    } catch {
+      router.push("/login");
     }
   };
 
   useEffect(() => {
     fetchUser();
-
-    // Listen for profile updates from profile page
     const handleUserUpdate = () => fetchUser();
     window.addEventListener("user-profile-updated", handleUserUpdate);
     return () => window.removeEventListener("user-profile-updated", handleUserUpdate);
   }, []);
 
+  const getPageTitle = () => {
+    if (pathname === "/entrepreneur" || pathname === "/investor" || pathname === "/admin") return "Dashboard";
+    if (pathname.includes("/feed")) return "Feed";
+    if (pathname.includes("/pitches")) return "Pitches";
+    if (pathname.includes("/network")) return "Network";
+    if (pathname.includes("/profile")) return "Profile";
+    if (pathname.includes("/payment")) return "Payment Methods";
+    if (pathname.includes("/kyc")) return "KYC";
+    if (pathname.includes("/users")) return "Users";
+    return "Dashboard";
+  };
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        {/* Logo */}
-        <a href="/" className="flex items-center gap-2">
-          <TrendingUp className="h-6 w-6 text-[#1A6B4A]" />
-          <span className="text-xl font-bold font-heading text-[#1A6B4A]">
-            PitchPal
-          </span>
-        </a>
-
-        {/* Nav Links */}
-        <nav className="hidden md:flex gap-6">
-          <a
-            href={user?.role === "entrepreneur" ? "/entrepreneur" : user?.role === "admin" ? "/admin" : "/investor"}
-            className="text-sm font-medium hover:text-[#1A6B4A]"
-          >
-            Dashboard
-          </a>
-
-          {/* Feed — visible to entrepreneur and investor */}
-          {(user?.role === "entrepreneur" || user?.role === "investor") && (
-            <a
-              href="/feed"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
-            >
-              <Rss className="w-4 h-4" />
-              Feed
-            </a>
-          )}
-
-          {/* Admin Nav */}
-          {user?.role === "admin" && (
-            <>
-              <a href="/admin/users" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
-                Users
-              </a>
-              <a
-                href="/admin/pitches"
-                className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
-              >
-                Pitch Queue
-              </a>
-              <a
-                href="/admin/kyc"
-                className="flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
-              >
-                <Shield className="w-4 h-4" />
-                KYC Queue
-                {adminPendingKycCount > 0 && (
-                  <span className="flex h-5 items-center justify-center rounded-full bg-amber-100 px-2 text-[10px] font-bold text-amber-600">
-                    {adminPendingKycCount}
-                  </span>
-                )}
-              </a>
-              <a href="/admin/analytics" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
-                Analytics
-              </a>
-              <a href="/admin/reports" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
-                Reports
-              </a>
-              <a href="/admin/audit-logs" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
-                Audit Logs
-              </a>
-            </>
-          )}
-
-          {/* Entrepreneur Nav */}
-          {user?.role === "entrepreneur" && (
-            <>
-              <a href="/entrepreneur/pitches" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
-                My Pitches
-              </a>
-              <a
-                href="/kyc"
-                className="flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
-              >
-                <Shield className="w-4 h-4" />
-                KYC
-                {(kycStatus === "pending" || kycStatus === "none") && (
-                  <span className="flex h-2 w-2 rounded-full bg-amber-500" />
-                )}
-              </a>
-            </>
-          )}
-
-          {/* Investor Nav */}
-          {user?.role === "investor" && (
-            <>
-              <a href="/investor/pitches" className="text-sm font-medium text-gray-500 hover:text-[#1A6B4A]">
-                Marketplace
-              </a>
-              <a
-                href="/kyc"
-                className="flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
-              >
-                <Shield className="w-4 h-4" />
-                KYC
-                {(kycStatus === "pending" || kycStatus === "none") && (
-                  <span className="flex h-2 w-2 rounded-full bg-amber-500" />
-                )}
-              </a>
-              <a
-                href="/investor/portfolio"
-                className="flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1A6B4A]"
-              >
-                <Briefcase className="w-4 h-4" />
-                Portfolio
-              </a>
-            </>
-          )}
-        </nav>
+    <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md">
+      <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Left Side: Page Title/Breadcrumb */}
+        <div className="flex items-center">
+          {/* Show the logo on mobile since sidebar is hidden */}
+          <div className="md:hidden flex items-center gap-2 mr-4 border-r pr-4">
+            <span className="text-lg font-bold font-heading text-[#1A6B4A]">
+              PitchPal
+            </span>
+          </div>
+          <h1 className="text-lg font-semibold text-gray-900">{getPageTitle()}</h1>
+        </div>
 
         {/* Right Side */}
         <div className="flex items-center gap-4">
@@ -188,7 +91,6 @@ export const DashboardNavbar = () => {
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end">
-                {/* User info — must be inside a Group for Base UI */}
                 <DropdownMenuGroup>
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
@@ -204,7 +106,6 @@ export const DashboardNavbar = () => {
                   </DropdownMenuLabel>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                {/* Action items — each group required by Base UI */}
                 <DropdownMenuGroup>
                   <DropdownMenuItem
                     className="cursor-pointer"
@@ -213,19 +114,22 @@ export const DashboardNavbar = () => {
                     <UserIcon className="mr-2 h-4 w-4" />
                     <span>Profile</span>
                   </DropdownMenuItem>
-                  {user?.role === "admin" && (
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => (window.location.href = "/kyc")}
+                  >
+                    <Shield className="mr-2 h-4 w-4" />
+                    <span>KYC</span>
+                  </DropdownMenuItem>
+                  {user?.role !== "admin" && (
                     <DropdownMenuItem
                       className="cursor-pointer"
-                      onClick={() => (window.location.href = "/admin/users")}
+                      onClick={() => (window.location.href = "/payment")}
                     >
-                      <Settings className="mr-2 h-4 w-4" />
-                      <span>User Management</span>
+                      <CreditCard className="mr-2 h-4 w-4" />
+                      <span>Payment Methods</span>
                     </DropdownMenuItem>
                   )}
-                  <DropdownMenuItem className="cursor-pointer">
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
-                  </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>

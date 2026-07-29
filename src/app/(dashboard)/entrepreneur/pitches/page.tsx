@@ -3,6 +3,7 @@ import { PlusCircle, FileText } from "lucide-react";
 import { fetchMyPitchesAction } from "@/lib/actions/pitch.actions";
 import PitchListTable from "./_components/PitchListTable";
 import KYCGuard from "@/components/kyc/KYCGuard";
+import DashboardWarningBanner from "@/components/dashboard/DashboardWarningBanner";
 
 interface MyPitchesPageProps {
   searchParams: Promise<{
@@ -27,8 +28,9 @@ export default async function MyPitchesPage({ searchParams }: MyPitchesPageProps
   const hasError = !result?.success;
 
   return (
-    <KYCGuard role="entrepreneur">
+    <>
       <div className="space-y-6">
+        <DashboardWarningBanner role="entrepreneur" />
         {/* Header */}
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3">
@@ -66,6 +68,6 @@ export default async function MyPitchesPage({ searchParams }: MyPitchesPageProps
           />
         )}
       </div>
-    </KYCGuard>
+    </>
   );
 }

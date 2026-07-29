@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Bell, CheckCheck, X } from "lucide-react";
-import { initSocket } from "@/lib/socket";
+import { initSocketWithRetry } from "@/lib/socket";
 import {
   getNotificationsAction,
   markNotificationAsReadAction,
@@ -54,15 +54,15 @@ export const NotificationBell = () => {
     };
     fetchInitial();
 
-    const socket = initSocket();
-    if (socket) {
+    const cleanup = initSocketWithRetry((socket) => {
       socket.on("notification", (newNotification: any) => {
         setNotifications((prev) => [newNotification, ...prev]);
         setUnreadCount((prev) => prev + 1);
       });
-    }
+    });
+
     return () => {
-      if (socket) socket.off("notification");
+      cleanup();
     };
   }, []);
 
